@@ -1,0 +1,71 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: prometheus
+  namespace: argocd
+spec:
+  project: default
+  source:
+    chart: prometheus
+    repoURL: https://prometheus-community.github.io/helm-charts
+    targetRevision: 25.11.0
+    helm:
+      values: |
+        server:
+          global:
+            scrape_interval: 15s
+          persistentVolume:
+            enabled: false
+        alertmanager:
+          enabled: false
+        pushgateway:
+          enabled: false
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: monitoring
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true
+
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: grafana
+  namespace: argocd
+spec:
+  project: default
+  source:
+    chart: grafana
+    repoURL: https://grafana.github.io/helm-charts
+    targetRevision: 7.3.0
+    helm:
+      values: |
+        persistence:
+          enabled: false
+        adminPassword: "admin"
+        service:
+          type: ClusterIP
+        datasources:
+          datasources.yaml:
+            apiVersion: 1
+            datasources:
+            - name: Prometheus
+              type: prometheus
+              url: http://prometheus-server.monitoring.svc.cluster.local
+              access: proxy
+              isDefault: true
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: monitoring
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true
