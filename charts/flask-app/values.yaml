@@ -1,7 +1,7 @@
 replicaCount: 1
 
 image:
-  repository: YOUR_DOCKERHUB_USER/k8s-monitor-workload  # <--- שנה לשם שלך!
+  repository: omerbh7/k8s-monitor-workload 
   pullPolicy: IfNotPresent
   tag: "v1.0.0"
 
