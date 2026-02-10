@@ -1,0 +1,18 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: monitoring-demo-app
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/omerbeithalahmy/k8s-observability-stack.git 
+    path: charts/monitoring-demo 
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: default 
+  syncPolicy:
+    automated:
+      prune: true   
+      selfHeal: true 
+      - CreateNamespace=true
