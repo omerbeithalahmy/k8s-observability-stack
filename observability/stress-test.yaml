@@ -1,0 +1,22 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: load-generator-job
+  namespace: default
+spec:
+  # הגדרת הזמן למחיקה עצמית אחרי סיום (בשניות)
+  ttlSecondsAfterFinished: 30
+  template:
+    spec:
+      containers:
+      - name: busybox
+        image: busybox
+        # הפקודה: רוץ 60 שניות ותעמיס, ואז תעצור
+        command: ["timeout", "60s", "/bin/sh", "-c", "while true; do :; done"]
+        resources:
+          requests:
+            cpu: "100m"
+          limits:
+            cpu: "500m" # חצי ליבה - יקפיץ את הגרף יפה
+      restartPolicy: Never
+  backoffLimit: 0

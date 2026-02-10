@@ -47,7 +47,6 @@ spec:
       values: |
         persistence:
           enabled: false
-        adminPassword: "admin"
         service:
           type: ClusterIP
         datasources:

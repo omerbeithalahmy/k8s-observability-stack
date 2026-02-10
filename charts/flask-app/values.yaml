@@ -3,7 +3,7 @@ replicaCount: 1
 image:
   repository: omerbh7/k8s-monitor-workload 
   pullPolicy: IfNotPresent
-  tag: "v1.0.0"
+  tag: "v2.0.0"
 
 service:
   type: ClusterIP
