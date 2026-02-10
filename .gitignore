@@ -1,0 +1,48 @@
+# ===== Python =====
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+dist/
+build/
+*.egg
+.venv/
+venv/
+env/
+*.whl
+
+# ===== Docker =====
+.docker/
+
+# ===== Kubernetes =====
+*.kubeconfig
+kubeconfig
+*.kube/
+
+# ===== Helm =====
+charts/*/charts/
+*.tgz
+
+# ===== IDE & Editors =====
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# ===== OS =====
+Thumbs.db
+.DS_Store
+
+# ===== Environment =====
+.env
+.env.*
+!.env.example
+
+# ===== Logs =====
+*.log
+
+# ===== Temporary Files =====
+tmp/
+temp/

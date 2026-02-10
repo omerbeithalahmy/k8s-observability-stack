@@ -4,19 +4,39 @@ metadata:
   name: load-generator-job
   namespace: default
 spec:
-  # הגדרת הזמן למחיקה עצמית אחרי סיום (בשניות)
   ttlSecondsAfterFinished: 30
   template:
     spec:
       containers:
-      - name: busybox
+      - name: cpu-stress-1
         image: busybox
-        # הפקודה: רוץ 60 שניות ותעמיס, ואז תעצור
-        command: ["timeout", "60s", "/bin/sh", "-c", "while true; do :; done"]
+        command: ["/bin/sh", "-c", "timeout 60 sh -c 'for i in 1 2 3 4; do while true; do :; done & done; wait'"]
         resources:
           requests:
-            cpu: "100m"
+            cpu: "500m"
+            memory: "256Mi"
           limits:
-            cpu: "500m" # חצי ליבה - יקפיץ את הגרף יפה
+            cpu: "2000m"
+            memory: "512Mi"
+      - name: cpu-stress-2
+        image: busybox
+        command: ["/bin/sh", "-c", "timeout 60 sh -c 'for i in 1 2 3 4; do while true; do :; done & done; wait'"]
+        resources:
+          requests:
+            cpu: "500m"
+            memory: "256Mi"
+          limits:
+            cpu: "2000m"
+            memory: "512Mi"
+      - name: memory-stress
+        image: busybox
+        command: ["/bin/sh", "-c", "timeout 60 sh -c 'dd if=/dev/zero bs=1M count=256 of=/dev/null; for i in 1 2; do while true; do :; done & done; wait'"]
+        resources:
+          requests:
+            cpu: "250m"
+            memory: "256Mi"
+          limits:
+            cpu: "1000m"
+            memory: "512Mi"
       restartPolicy: Never
   backoffLimit: 0
