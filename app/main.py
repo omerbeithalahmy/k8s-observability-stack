@@ -5,7 +5,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def home():
-    return "<h1>K8s Cluster Monitoring Project</h1><p>I am a workload running on your cluster!</p>"
+    return "Hello From app!"
 
 @app.route('/health')
 def health():
